@@ -142,6 +142,7 @@ function MainPage({mainInfo}: MainPageProps): JSX.Element {
           </ul>
 
           <div className="catalog__films-list">
+
             <FilmCard />
 
             <FilmCard />
