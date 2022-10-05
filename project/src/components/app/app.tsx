@@ -1,5 +1,5 @@
 import {Route, BrowserRouter, Routes} from 'react-router-dom';
-import {AppRoute} from '../../const';
+import {AppRoute, AuthorizationStatus} from '../../const';
 import MainPage from '../../pages/main-page/main-page';
 import AddReview from '../../pages/add-review-page/add-review-page';
 import Film from '../../pages/film-page/film-page';
@@ -7,6 +7,7 @@ import MyList from '../../pages/my-list-page/my-list-page';
 import Player from '../../pages/player-page/player-page';
 import SignIn from '../../pages/sign-in-page/sign-in-page';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';
+import PrivateRoute from '../private-route/private-route';
 
 
 type mainInfo = {
@@ -33,7 +34,13 @@ function App({year, genre, title}: mainInfo): JSX.Element {
         />
         <Route
           path={AppRoute.MyList}
-          element={<MyList />}
+          element={
+            <PrivateRoute
+              authorizationStatus={AuthorizationStatus.NoAuth}
+            >
+              <MyList />
+            </PrivateRoute>
+          }
         />
         <Route
           path={AppRoute.Player}
