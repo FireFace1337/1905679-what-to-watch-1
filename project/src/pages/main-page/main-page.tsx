@@ -143,45 +143,8 @@ function MainPage({mainInfo}: MainPageProps): JSX.Element {
 
           <div className="catalog__films-list">
 
-            <FilmCard />
+            {Array.from({length:20}, (i: number) => <FilmCard key={i} />)}
 
-            <FilmCard />
-
-            <FilmCard />
-
-            <FilmCard />
-
-            <FilmCard />
-
-            <FilmCard />
-
-            <FilmCard />
-
-            <FilmCard />
-
-            <FilmCard />
-
-            <FilmCard />
-
-            <FilmCard />
-
-            <FilmCard />
-
-            <FilmCard />
-
-            <FilmCard />
-
-            <FilmCard />
-
-            <FilmCard />
-
-            <FilmCard />
-
-            <FilmCard />
-
-            <FilmCard />
-
-            <FilmCard />
           </div>
 
           <div className="catalog__more">
