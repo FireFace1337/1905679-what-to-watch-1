@@ -1,10 +1,12 @@
 import FilmCard from '../../components/film-card/film-card';
+import {TypeFilm} from '../../types/film';
 
 type MainPageProps = {
     mainInfo: {
         year: number,
         genre: string,
-        title: string
+        title: string,
+        films: TypeFilm[]
     }
 }
 
@@ -143,7 +145,7 @@ function MainPage({mainInfo}: MainPageProps): JSX.Element {
 
           <div className="catalog__films-list">
 
-            {Array.from({length:20}, (i: number) => <FilmCard key={i} />)}
+            { mainInfo.films.map((film) => <FilmCard key={ film.id } name={film.name } previewImage={ film.previewImage }/>) }
 
           </div>
 

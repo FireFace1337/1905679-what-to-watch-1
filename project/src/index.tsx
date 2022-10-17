@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './components/app/app';
+import {filmsList} from './mocks/film';
 
 const Setting = {
   year: 2022,
@@ -18,6 +19,7 @@ root.render(
       year = {Setting.year}
       genre = {Setting.genre}
       title = {Setting.title}
+      films={filmsList}
     />
   </React.StrictMode>,
 );
