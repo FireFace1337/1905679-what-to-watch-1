@@ -1,10 +1,15 @@
 import FilmCard from '../../components/film-card/film-card';
+import {TypeFilm} from '../../types/film';
+import MovieList from '../../components/movie-list/movie-list';
+import {TypeGenres} from '../../types/genre';
 
 type MainPageProps = {
     mainInfo: {
         year: number,
         genre: string,
-        title: string
+        title: string,
+        films: TypeFilm[],
+        genres: TypeGenres[]
     }
 }
 
@@ -105,52 +110,7 @@ function MainPage({mainInfo}: MainPageProps): JSX.Element {
       </section>
 
       <div className="page-content">
-        <section className="catalog">
-          <h2 className="catalog__title visually-hidden">Catalog</h2>
-
-          <ul className="catalog__genres-list">
-            <li className="catalog__genres-item catalog__genres-item--active">
-              <a href="#" className="catalog__genres-link">All genres</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Comedies</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Crime</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Documentary</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Dramas</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Horror</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Kids & Family</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Romance</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Sci-Fi</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Thrillers</a>
-            </li>
-          </ul>
-
-          <div className="catalog__films-list">
-
-            {Array.from({length:20}, (i: number) => <FilmCard key={i} />)}
-
-          </div>
-
-          <div className="catalog__more">
-            <button className="catalog__button" type="button">Show more</button>
-          </div>
-        </section>
+        <MovieList films={mainInfo.films} genres={mainInfo.genres}/>
 
         <footer className="page-footer">
           <div className="logo">

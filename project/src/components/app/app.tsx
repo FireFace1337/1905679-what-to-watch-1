@@ -8,21 +8,24 @@ import Player from '../../pages/player-page/player-page';
 import SignIn from '../../pages/sign-in-page/sign-in-page';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import PrivateRoute from '../private-route/private-route';
-
+import {TypeFilm} from '../../types/film';
+import {TypeGenres} from '../../types/genre';
 
 type mainInfo = {
   year: number;
   genre: string;
   title: string;
+  films: TypeFilm[];
+  genres: TypeGenres[];
 }
 
-function App({year, genre, title}: mainInfo): JSX.Element {
+function App({year, genre, title, films, genres}: mainInfo): JSX.Element {
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path={AppRoute.Main}
-          element={<MainPage mainInfo = {{year, genre, title}} />}
+          element={<MainPage mainInfo = {{year, genre, title, films, genres}} />}
         />
         <Route
           path={AppRoute.AddReview}
