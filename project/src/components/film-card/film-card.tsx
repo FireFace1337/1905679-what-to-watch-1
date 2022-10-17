@@ -1,11 +1,15 @@
+import {MouseEvent} from 'react';
+
 type FilmCardType = {
+  id: number;
   name: string;
-  previewImage: string
+  previewImage: string;
+  onMouseOver: (evt: MouseEvent<HTMLDivElement>) => void;
 }
 
-function FilmCard({name, previewImage}: FilmCardType): JSX.Element {
+function FilmCard({id, name, previewImage, onMouseOver}: FilmCardType): JSX.Element {
   return (
-    <article className="small-film-card catalog__films-card">
+    <article className="small-film-card catalog__films-card" onMouseOver={onMouseOver}>
       <div className="small-film-card__image">
         <img src={previewImage} alt={name} width="280" height="175" />
       </div>
