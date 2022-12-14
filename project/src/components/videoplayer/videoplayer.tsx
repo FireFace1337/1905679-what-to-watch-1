@@ -1,35 +1,33 @@
 import { useEffect, useRef } from 'react';
-import { TypeFilm } from '../../types/film';
 
-type VideoProps = {
-  filmData: TypeFilm;
-  isPlaying: boolean;
+type VideoPlayerProps = {
+  src: string;
+  poster: string;
 }
 
-function Video({ filmData, isPlaying }: VideoProps) {
-  const previewRef = useRef<HTMLVideoElement | null>(null);
+function VideoPlayer({src, poster}: VideoPlayerProps) {
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    (async () => {
-      if (previewRef.current === null) {
-        return;
-      }
+    const timeout = setTimeout(() => {
+      videoRef.current?.play();
+    }, 1000);
 
-      if (isPlaying) {
-        previewRef.current.src = filmData.previewVideoLink;
-        return await previewRef.current.play();
-      }
-
-      if (!isPlaying) {
-        previewRef.current.src = '';
-      }
-    })();
-  }, [filmData.previewVideoLink, isPlaying]);
-
+    return () => clearTimeout(timeout);
+  });
 
   return (
-    <video width="280" height="175" poster={filmData.previewImage} ref={previewRef} muted />
+    <video
+      width={280}
+      height={175}
+      poster={poster}
+      ref={videoRef}
+      muted
+      loop
+    >
+      <source src={src} />
+    </video>
   );
 }
 
-export default Video;
+export default VideoPlayer;
