@@ -1,62 +1,54 @@
-import {Route, BrowserRouter, Routes} from 'react-router-dom';
-import {AppRoute, AuthorizationStatus} from '../../const';
-import MainPage from '../../pages/main-page/main-page';
-import AddReview from '../../pages/add-review-page/add-review-page';
-import Film from '../../pages/film-page/film-page';
-import MyList from '../../pages/my-list-page/my-list-page';
-import Player from '../../pages/player-page/player-page';
-import SignIn from '../../pages/sign-in-page/sign-in-page';
-import NotFoundPage from '../../pages/not-found-page/not-found-page';
-import PrivateRoute from '../private-route/private-route';
-import {TypeFilm} from '../../types/film';
-import {TypeGenres} from '../../types/genre';
+import MainContent from '../../pages/mainContent/mainContent';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import NotFound from '../notFound/notFound';
+import SignIn from '../../pages/signIn/signIn';
+import MyList from '../../pages/myList/myList';
+import MoviePage from '../../pages/moviePage/moviePage';
+import AddReview from '../../pages/addReview/addReview';
+import Player from '../../pages/player/player';
+import PrivateRoute from '../privateRoute/privateRoute';
+import { Film } from '../../types/films';
+import { Promo } from '../../types/promo';
+import { AppRoute, AuthorizationStatus } from '../../const';
+import ScrollToTop from '../scrollToTop/scrollToTop';
 
-type mainInfo = {
-  year: number;
-  genre: string;
-  title: string;
-  films: TypeFilm[];
-  genres: TypeGenres[];
+type AppProps = {
+  films: Film[];
+  promoFilm: Promo;
+  favouriteFilms: Film[];
 }
 
-function App({year, genre, title, films, genres}: mainInfo): JSX.Element {
+function App(props: AppProps): JSX.Element {
+  const {films, promoFilm, favouriteFilms} = props;
+
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
-        <Route
-          path={AppRoute.Main}
-          element={<MainPage mainInfo = {{year, genre, title, films, genres}} />}
-        />
-        <Route
-          path={AppRoute.AddReview}
-          element={<AddReview />}
-        />
-        <Route
-          path={AppRoute.Film}
-          element={<Film />}
-        />
-        <Route
-          path={AppRoute.MyList}
-          element={
-            <PrivateRoute
-              authorizationStatus={AuthorizationStatus.NoAuth}
-            >
-              <MyList />
+        <Route path='/'>
+          <Route index element={
+            <MainContent
+              films={films}
+              promoFilm={promoFilm}
+            />
+          }
+          />
+          <Route path={AppRoute.Login} element={ <SignIn /> } />
+          <Route path={AppRoute.MyList} element={
+            <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
+              <MyList favouriteFilms={favouriteFilms} />
             </PrivateRoute>
           }
-        />
-        <Route
-          path={AppRoute.Player}
-          element={<Player />}
-        />
-        <Route
-          path={AppRoute.SignIn}
-          element={<SignIn />}
-        />
-        <Route
-          path="*"
-          element={<NotFoundPage />}
-        />
+          />
+          <Route path={AppRoute.Films}>
+            <Route path=':filmId' element={ <MoviePage films={films} /> } />
+            <Route path={`:filmId${AppRoute.Review}`} element={ <AddReview films={films} /> } />
+          </Route>
+          <Route path={AppRoute.Player}>
+            <Route path=':filmId' element={ <Player /> } />
+          </Route>
+        </Route>
+        <Route path='*' element={ <NotFound /> } />
       </Routes>
     </BrowserRouter>
   );
