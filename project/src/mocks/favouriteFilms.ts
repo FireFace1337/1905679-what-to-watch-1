@@ -2,21 +2,23 @@ import { Film } from '../types/films';
 
 export const favouriteFilms : Film[] = [
   {
-    name: 'Major',
+    name: 'Aviator',
     posterImage: 'https://10.react.pages.academy/static/film/poster/Aviator.jpg',
     previewImage: 'https://10.react.pages.academy/static/film/preview/aviator.jpg',
     backgroundImage: 'https://10.react.pages.academy/static/film/background/Aviator.jpg',
     backgroundColor: '#D6CDAF',
-    description: 'description',
-    rating: 9,
-    scoresCount: 30000,
-    director: 'director',
+    description: 'A biopic depicting the early years of legendary Director and aviator Howard Hughes\' career from the late 1920s to the mid 1940s.',
+    rating: 9.8,
+    scoresCount: 307174,
+    director: 'Martin Scorsese',
     starring: [
-      'Pavel Priluchniy'
+      'Leonardo DiCaprio',
+      'Cate Blanchett',
+      'Kate Beckinsale'
     ],
-    runTime: 180,
+    runTime: 170,
     genre: 'Drama',
-    released: 2022,
+    released: 2014,
     id: 8,
     isFavorite: false,
     videoLink: 'https://10.react.pages.academy/static/film/video/bubbles.mp4',
