@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useAppSelector } from '../../hooks';
 import PromoFilmCard from '../../components/promoFilmCard/promoFilmCard';
 import ListOfFilms from '../../components/listOfFilms/listOfFilms';
@@ -5,6 +6,7 @@ import { Film } from '../../types/films';
 import { Promo } from '../../types/promo';
 import Logo from '../../components/logo/logo';
 import ListOfGenres from '../../components/ListOfGenres/ListOfGenres';
+import ShowMoreButton from '../../components/showMoreButton/showMoreButton';
 
 type MainContentProps = {
   films: Film[];
@@ -12,6 +14,7 @@ type MainContentProps = {
 }
 
 function MainContent({films, promoFilm}: MainContentProps): JSX.Element {
+  const [numberOfFilms, setNumberOfFilms] = useState(8);
   const {backgroundImage, name} = promoFilm;
   const currentGenre = useAppSelector((state) => state.genre);
   return (
@@ -47,15 +50,15 @@ function MainContent({films, promoFilm}: MainContentProps): JSX.Element {
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-          <ListOfGenres currentGenre={currentGenre} />
+          <ListOfGenres currentGenre={currentGenre} setNumberOfFilms={setNumberOfFilms} />
 
           <div className="catalog__films-list">
-            <ListOfFilms films={films} />
+            <ListOfFilms films={films.slice(0, numberOfFilms)} />
           </div>
 
-          <div className="catalog__more">
-            <button className="catalog__button" type="button">Show more</button>
-          </div>
+          {
+            films.length > numberOfFilms && <ShowMoreButton setNumberOfFilms={setNumberOfFilms} />
+          }
         </section>
 
         <footer className="page-footer">
