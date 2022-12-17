@@ -31,7 +31,7 @@ function SignIn() : JSX.Element {
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
-    if (emailRef.current !== null && passwordRef.current !== null) {
+    if (emailRef.current && passwordRef.current) {
       if (checkPassword(passwordRef.current.value) && checkEmail(emailRef.current.value)) {
         dispatch(loginAction({
           email: emailRef.current.value,
@@ -42,7 +42,7 @@ function SignIn() : JSX.Element {
   };
 
   const onEmailChange = (): void => {
-    if (emailRef.current !== null) {
+    if (emailRef.current) {
       if (checkEmail(emailRef.current.value)) {
         setIsValidEmail(true);
       } else {
@@ -52,7 +52,7 @@ function SignIn() : JSX.Element {
   };
 
   const onPasswordChange = (): void => {
-    if (passwordRef.current !== null) {
+    if (passwordRef.current) {
       if (checkPassword(passwordRef.current.value)) {
         setIsValidPassword(true);
       } else {

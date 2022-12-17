@@ -19,14 +19,13 @@ import { getMyList } from '../../store/api-actions';
 
 function App(): JSX.Element {
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const dispatch = useAppDispatch();
 
   if (authorizationStatus === AuthorizationStatus.Unknown) {
     return <LoadingScreen />;
   }
 
   if (authorizationStatus === AuthorizationStatus.Auth) {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const dispatch = useAppDispatch();
     dispatch(getMyList());
   }
 

@@ -15,18 +15,21 @@ function FilmCard(props: FilmCardProps): JSX.Element {
 
   return (
     <article className="small-film-card catalog__films-card">
-      <div
-        className="small-film-card__image"
+      <Link
+        className="small-film-card__link"
+        to={`/films/${id}`}
         onMouseOver={() => setIsActive(true)}
         onMouseOut={() => setIsActive(false)}
       >
-        { isActive
-          ? <VideoPlayer src={previewVideoLink} poster={previewImage} />
-          : <img src={previewImage} alt={name} width="280" height="175" /> }
-      </div>
-      <h3 className="small-film-card__title">
-        <Link className="small-film-card__link" to={`/films/${id}`}>{name}</Link>
-      </h3>
+        <div
+          className="small-film-card__image"
+        >
+          { isActive
+            ? <VideoPlayer src={previewVideoLink} poster={previewImage} />
+            : <img src={previewImage} alt={name} width="280" height="175" /> }
+        </div>
+        <h3 className="small-film-card__title">{name}</h3>
+      </Link>
     </article>
   );
 }
