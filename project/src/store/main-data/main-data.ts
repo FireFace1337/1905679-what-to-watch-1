@@ -1,13 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace } from '../../const';
-import { FilmData } from '../../types/state';
+import { MainData } from '../../types/state';
 import { fetchFilms, fetchPromoFilm } from '../api-actions';
 import { toast } from 'react-toastify';
 import { toastifyOptions } from '../../const';
 import { AllGenres } from '../../const';
 import { getFilmGenres } from '../../utils/films-genres';
 
-const initialState: FilmData = {
+const initialState: MainData = {
   listOfFilms: [],
   promoFilm: null,
   isLoading: false,
@@ -15,7 +15,7 @@ const initialState: FilmData = {
   genres: []
 };
 
-export const filmData = createSlice({
+export const mainData = createSlice({
   name: NameSpace.MainPage,
   initialState,
   reducers: {
@@ -46,4 +46,4 @@ export const filmData = createSlice({
   }
 });
 
-export const {changeCurrentGenre} = filmData.actions;
+export const {changeCurrentGenre} = mainData.actions;

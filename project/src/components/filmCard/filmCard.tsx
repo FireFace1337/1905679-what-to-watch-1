@@ -14,7 +14,7 @@ function FilmCard(props: FilmCardProps): JSX.Element {
   const {name, previewImage, id, previewVideoLink} = props;
 
   return (
-    <article className="small-film-card catalog__films-card">
+    <article className="small-film-card catalog__films-card" data-testid="film_card">
       <Link
         className="small-film-card__link"
         to={`/films/${id}`}

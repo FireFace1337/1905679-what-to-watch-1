@@ -1,19 +1,21 @@
 import { MutableRefObject } from 'react';
-import ProgressBar from './playerControls/progressBar';
-import PlayButton from './playerControls/playButton';
-import FullScreenButton from './playerControls/fullScreenButton';
+import ProgressBar from './controls/progressBar';
+import PlayButton from './controls/playButton';
+import FullScreenButton from './controls/fullScreenButton';
 import './playerControls.css';
 
 type PlayerControlsProps = {
   videoRef: MutableRefObject<HTMLVideoElement | null>;
+  name: string;
+  setIsWaiting: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const PlayerControls = ({videoRef}: PlayerControlsProps): JSX.Element => (
+const PlayerControls = ({videoRef, name, setIsWaiting}: PlayerControlsProps): JSX.Element => (
   <div className="player__controls">
     <ProgressBar videoRef={videoRef} />
     <div className="player__controls-row">
-      <PlayButton videoRef={videoRef} />
-      <div className="player__name">Transpotting</div>
+      <PlayButton videoRef={videoRef} setIsWaiting={setIsWaiting} />
+      <div className="player__name">{name}</div>
       <FullScreenButton />
     </div>
   </div>

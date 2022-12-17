@@ -1,26 +1,30 @@
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import Logo from '../../components/logo/logo';
 import { useAppSelector, useAppDispatch } from '../../hooks';
-import { getAuthorizationStatus } from '../../store/user-process/selectors';
 import { getCurrentFilm } from '../../store/current-film-data/selectors';
-import { redirect } from '../../store/actions';
-import { AuthorizationStatus, AppRoute } from '../../const';
 import NotFound from '../notFound/notFound';
 import FormReview from '../../components/formReview/formReview';
 import LoginBlock from '../../components/loginBlock/loginBlock';
+import { fetchFilmById } from '../../store/api-actions';
+import { getLoadingStatus } from '../../store/current-film-data/selectors';
+import LoadingScreen from '../loadingScreen/loadingScreen';
 
 function AddReview(): JSX.Element {
   const dispatch = useAppDispatch();
 
+  const filmId = String(useParams().filmId);
+
   const currentFilm = useAppSelector(getCurrentFilm);
-  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const isLoading = useAppSelector(getLoadingStatus);
 
   useEffect(() => {
-    if (authorizationStatus === AuthorizationStatus.NoAuth) {
-      dispatch(redirect(AppRoute.Main));
-    }
-  }, [authorizationStatus, dispatch]);
+    dispatch(fetchFilmById(filmId));
+  }, [dispatch, filmId]);
+
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
 
   if (!currentFilm) {
     return <NotFound />;

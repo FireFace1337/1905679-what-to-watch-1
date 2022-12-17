@@ -2,7 +2,7 @@ import { ThreeDots } from 'react-loader-spinner';
 
 function LoadingScreen(): JSX.Element {
   return (
-    <div className='user-page'>
+    <div className='user-page' data-testid="loading">
       <ThreeDots
         height="80"
         width="100%"

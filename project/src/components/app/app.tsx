@@ -1,6 +1,4 @@
 import { Routes, Route } from 'react-router-dom';
-import HistoryRouter from '../historyRouter/historyRouter';
-import { browserHistory } from '../../browserHistory';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import MainContent from '../../pages/mainContent/mainContent';
 import NotFound from '../../pages/notFound/notFound';
@@ -30,10 +28,10 @@ function App(): JSX.Element {
   }
 
   return (
-    <HistoryRouter history={browserHistory}>
+    <>
       <ScrollToTop />
       <Routes>
-        <Route path='/'>
+        <Route path={AppRoute.Main}>
           <Route index element={
             <MainContent />
           }
@@ -47,7 +45,12 @@ function App(): JSX.Element {
           />
           <Route path={AppRoute.Films}>
             <Route path=':filmId' element={ <MoviePage /> } />
-            <Route path={`:filmId${AppRoute.Review}`} element={ <AddReview /> } />
+            <Route path={`:filmId${AppRoute.Review}`} element={
+              <PrivateRoute>
+                <AddReview />
+              </PrivateRoute>
+            }
+            />
           </Route>
           <Route path={AppRoute.Player}>
             <Route path=':filmId' element={ <Player /> } />
@@ -55,7 +58,7 @@ function App(): JSX.Element {
         </Route>
         <Route path='*' element={ <NotFound /> } />
       </Routes>
-    </HistoryRouter>
+    </>
   );
 }
 

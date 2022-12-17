@@ -66,7 +66,7 @@ function MainContent(): JSX.Element | null {
           </div>
 
           {
-            filteredFilms.length > numberOfFilms && <ShowMoreButton onSetNumberOfFilms={setNumberOfFilms} />
+            filteredFilms.length > numberOfFilms && <ShowMoreButton onSetNumberOfFilms={setNumberOfFilms} numberOfFilms={NUMBER_OF_FILMS} />
           }
         </section>
 

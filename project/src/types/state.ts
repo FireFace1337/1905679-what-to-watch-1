@@ -13,7 +13,7 @@ export type UserProcess = {
   favoriteFilms: Film[];
 }
 
-export type FilmData = {
+export type MainData = {
   currentGenre: string;
   genres: string[];
   isLoading: boolean;

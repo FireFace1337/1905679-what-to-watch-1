@@ -29,6 +29,9 @@ export const currentFilmData = createSlice({
         state.film = action.payload;
         state.isLoading = false;
       })
+      .addCase(fetchFilmById.rejected, (state) => {
+        toast.error('Couldn\'t get film', toastifyOptions);
+      })
       .addCase(fetchCommentsById.fulfilled, (state, action) => {
         state.comments = action.payload;
       })
