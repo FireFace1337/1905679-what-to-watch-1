@@ -1,4 +1,4 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Logo from '../../components/logo/logo';
 import { useAppSelector, useAppDispatch } from '../../hooks';
@@ -15,6 +15,7 @@ import LoadingScreen from '../loadingScreen/loadingScreen';
 
 function MoviePage(): JSX.Element {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const filmId = String(useParams().filmId);
 
@@ -52,6 +53,10 @@ function MoviePage(): JSX.Element {
     dispatch(changeFavoriteFilmStatus({filmId, status}));
   };
 
+  const onPlayButton = () => {
+    navigate(`${AppRoute.Player}/${filmId}`);
+  };
+
   const {name, backgroundColor, backgroundImage, genre, released, posterImage, starring, director, description, rating, runTime, scoresCount} = currentFilm;
 
   return (
@@ -79,7 +84,7 @@ function MoviePage(): JSX.Element {
               </p>
 
               <div className="film-card__buttons">
-                <button className="btn btn--play film-card__button" type="button">
+                <button className="btn btn--play film-card__button" type="button" onClick={() => onPlayButton()}>
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"></use>
                   </svg>

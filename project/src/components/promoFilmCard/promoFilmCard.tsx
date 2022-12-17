@@ -1,5 +1,6 @@
+import { useNavigate } from 'react-router-dom';
 import { Film } from '../../types/film';
-import { AuthorizationStatus } from '../../const';
+import { AppRoute, AuthorizationStatus } from '../../const';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { getFavouriteFilms, getAuthorizationStatus } from '../../store/user-process/selectors';
 import { changeFavoriteFilmStatus } from '../../store/api-actions';
@@ -9,21 +10,26 @@ type PromoFilmCardProps = {
 }
 
 function PromoFilmCard({film} : PromoFilmCardProps) : JSX.Element {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const {name, genre, released, posterImage} = film;
+  const {name, genre, released, posterImage, id} = film;
 
   const favoriteFilms = useAppSelector(getFavouriteFilms);
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   const onMyListButton = () => {
     let status: number;
-    const filmId = String(film.id);
+    const filmId = String(id);
 
     if (film.isFavorite) { status = 0; }
     else { status = 1; }
 
     dispatch(changeFavoriteFilmStatus({filmId, status}));
+  };
+
+  const onPlayButton = () => {
+    navigate(`${AppRoute.Player}/${id}`);
   };
 
   return (
@@ -41,7 +47,7 @@ function PromoFilmCard({film} : PromoFilmCardProps) : JSX.Element {
           </p>
 
           <div className="film-card__buttons">
-            <button className="btn btn--play film-card__button" type="button">
+            <button className="btn btn--play film-card__button" type="button" onClick={() => onPlayButton()}>
               <svg viewBox="0 0 19 19" width="19" height="19">
                 <use xlinkHref="#play-s"></use>
               </svg>
