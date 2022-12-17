@@ -1,7 +1,20 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { Genre } from '../const';
-import { changeGenre, sortFilmsByGenre, loadFilms, loadPromoFilm, setLoadingStatus, updateAuthorizationStatus, loadUserData } from './actions';
+import {
+  changeGenre,
+  sortFilmsByGenre,
+  loadFilms,
+  loadPromoFilm,
+  setLoadingStatus,
+  updateAuthorizationStatus,
+  loadUserData,
+  loadCurrentFilm,
+  loadComments,
+  loadSimilarFilms,
+  updateComments
+} from './actions';
 import { Film } from '../types/film';
+import { Comment } from '../types/comment';
 import { UserData } from '../types/userData';
 import { AuthorizationStatus } from '../const';
 import { getUser } from '../services/user';
@@ -14,6 +27,9 @@ type stateType = {
   isLoading: boolean;
   authorizationStatus: AuthorizationStatus;
   user: UserData | null;
+  currentFilm: Film | null;
+  comments: Comment[];
+  similarFilms: Film[];
 }
 
 const user = getUser();
@@ -26,6 +42,9 @@ const initialState: stateType = {
   isLoading: true,
   authorizationStatus: user ? AuthorizationStatus.Auth : AuthorizationStatus.Unknown,
   user,
+  currentFilm: null,
+  comments: [],
+  similarFilms: [],
 };
 
 export const reducer = createReducer(initialState, (builder) => {
@@ -58,5 +77,17 @@ export const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(loadUserData, (state, action) => {
       state.user = action.payload;
+    })
+    .addCase(loadCurrentFilm, (state, action) => {
+      state.currentFilm = action.payload;
+    })
+    .addCase(loadComments, (state, action) => {
+      state.comments = action.payload;
+    })
+    .addCase(updateComments, (state, action) => {
+      state.comments = action.payload;
+    })
+    .addCase(loadSimilarFilms, (state, action) => {
+      state.similarFilms = action.payload;
     });
 });

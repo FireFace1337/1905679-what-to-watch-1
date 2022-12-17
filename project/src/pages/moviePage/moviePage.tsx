@@ -1,24 +1,39 @@
 import { Link, useParams } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Logo from '../../components/logo/logo';
 import { useAppSelector } from '../../hooks';
 import NotFound from '../notFound/notFound';
 import Tabs from '../../components/tabs/tabs';
-import { Tab } from '../../const';
-import { comments } from '../../mocks/comments';
+import { Tab, AuthorizationStatus, AppRoute } from '../../const';
 import { MovieOverview, MovieDetails, MovieReviews } from '../../components/movieTabs';
-import { similarFilms } from '../../mocks/similarFilms';
 import ListOfFilms from '../../components/listOfFilms/listOfFilms';
 import LoginBlock from '../../components/loginBlock/loginBlock';
+import { useAppDispatch } from '../../hooks';
+import { fetchFilmById, fetchSimilarFilmsById, fetchCommentsById } from '../../store/api-actions';
+import LoadingScreen from '../loadingScreen/loadingScreen';
 
 function MoviePage(): JSX.Element {
-  const {listOfFilms} = useAppSelector((state) => state);
+  const dispatch = useAppDispatch();
+
+  const {currentFilm, comments, similarFilms, authorizationStatus} = useAppSelector((state) => state);
   const [activeTab, setActiveTab] = useState(Tab.Overview);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const {filmId} = useParams();
-  const film = listOfFilms.find((e) => e.id === Number(filmId));
+  const filmId = String(useParams<string>().filmId);
 
-  if (film === undefined) {
+  useEffect(() => {
+    setIsLoading(true);
+    dispatch(fetchFilmById(filmId));
+    dispatch(fetchCommentsById(filmId));
+    dispatch(fetchSimilarFilmsById(filmId));
+    setIsLoading(false);
+  }, [dispatch, filmId]);
+
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
+
+  if (!currentFilm) {
     return <NotFound />;
   }
 
@@ -26,12 +41,14 @@ function MoviePage(): JSX.Element {
     setActiveTab(tab);
   };
 
+  const {name, backgroundColor, backgroundImage, genre, released, posterImage, starring, director, description, rating, runTime} = currentFilm;
+
   return (
     <>
-      <section className="film-card film-card--full" style={{'background': film.backgroundColor}}>
+      <section className="film-card film-card--full" style={{'background': backgroundColor}}>
         <div className="film-card__hero">
           <div className="film-card__bg">
-            <img src={film.backgroundImage} alt={film.name} />
+            <img src={backgroundImage} alt={name} />
           </div>
 
           <h1 className="visually-hidden">WTW</h1>
@@ -44,10 +61,10 @@ function MoviePage(): JSX.Element {
 
           <div className="film-card__wrap">
             <div className="film-card__desc">
-              <h2 className="film-card__title">{film.name}</h2>
+              <h2 className="film-card__title">{name}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">{film.genre}</span>
-                <span className="film-card__year">{film.released}</span>
+                <span className="film-card__genre">{genre}</span>
+                <span className="film-card__year">{released}</span>
               </p>
 
               <div className="film-card__buttons">
@@ -64,7 +81,11 @@ function MoviePage(): JSX.Element {
                   <span>My list</span>
                   <span className="film-card__count">9</span>
                 </button>
-                <Link to='review' className="btn film-card__button">Add review</Link>
+                {
+                  authorizationStatus === AuthorizationStatus.Auth
+                    ? <Link to={`${AppRoute.Films}/${filmId}${AppRoute.Review}`} className="btn film-card__button">Add review</Link>
+                    : null
+                }
               </div>
             </div>
           </div>
@@ -73,7 +94,7 @@ function MoviePage(): JSX.Element {
         <div className="film-card__wrap film-card__translate-top">
           <div className="film-card__info">
             <div className="film-card__poster film-card__poster--big">
-              <img src={film.posterImage} alt={film.name} width="218" height="327" />
+              <img src={posterImage} alt={name} width="218" height="327" />
             </div>
 
             <div className="film-card__desc">
@@ -81,19 +102,19 @@ function MoviePage(): JSX.Element {
 
               {activeTab === Tab.Overview &&
                 <MovieOverview
-                  rating={film.rating}
-                  description={film.description}
-                  director={film.director}
-                  starring={film.starring}
+                  rating={rating}
+                  description={description}
+                  director={director}
+                  starring={starring}
                 />}
 
               {activeTab === Tab.Details &&
                 <MovieDetails
-                  director={film.director}
-                  starring={film.starring}
-                  runTime={film.runTime}
-                  genre={film.genre}
-                  released={film.released}
+                  director={director}
+                  starring={starring}
+                  runTime={runTime}
+                  genre={genre}
+                  released={released}
                 />}
 
               {activeTab === Tab.Reviews && <MovieReviews reviews={comments} />}

@@ -1,24 +1,31 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
 import Logo from '../../components/logo/logo';
-import { useAppSelector } from '../../hooks';
+import { useAppSelector, useAppDispatch } from '../../hooks';
+import { redirect } from '../../store/actions';
+import { AuthorizationStatus, AppRoute } from '../../const';
 import NotFound from '../notFound/notFound';
 import FormReview from '../../components/formReview/formReview';
 import LoginBlock from '../../components/loginBlock/loginBlock';
 
 function AddReview(): JSX.Element {
-  const {listOfFilms} = useAppSelector((state) => state);
+  const dispatch = useAppDispatch();
+  const {currentFilm, authorizationStatus} = useAppSelector((state) => state);
 
-  const {filmId} = useParams();
-  const film = listOfFilms.find((e) => e.id === Number(filmId));
+  useEffect(() => {
+    if (authorizationStatus === AuthorizationStatus.NoAuth) {
+      dispatch(redirect(AppRoute.Main));
+    }
+  }, []);
 
-  if (film === undefined) {
+  if (!currentFilm) {
     return <NotFound />;
   }
 
-  const {id, name, posterImage, backgroundImage} = film;
+  const {id, name, posterImage, backgroundImage, backgroundColor} = currentFilm;
 
   return (
-    <section className="film-card film-card--full" style={{'background': film.backgroundColor}}>
+    <section className="film-card film-card--full" style={{'background': backgroundColor}}>
       <div className="film-card__header">
         <div className="film-card__bg">
           <img src={backgroundImage} alt={name} />

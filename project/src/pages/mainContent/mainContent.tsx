@@ -3,7 +3,7 @@ import { useAppSelector } from '../../hooks';
 import PromoFilmCard from '../../components/promoFilmCard/promoFilmCard';
 import ListOfFilms from '../../components/listOfFilms/listOfFilms';
 import Logo from '../../components/logo/logo';
-import ListOfGenres from '../../components/listOfGenres/listOfGenres';
+import ListOfGenres from '../../components/listOfGenres/ListOfGenres';
 import ShowMoreButton from '../../components/showMoreButton/showMoreButton';
 import LoginBlock from '../../components/loginBlock/loginBlock';
 import { NUMBER_OF_FILMS } from '../../const';
