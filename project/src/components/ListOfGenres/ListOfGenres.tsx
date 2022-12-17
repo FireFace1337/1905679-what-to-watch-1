@@ -2,13 +2,14 @@ import { Dispatch, SetStateAction } from 'react';
 import { GenresObj, Genre } from '../../const';
 import { useAppDispatch } from '../../hooks';
 import { changeGenre, sortFilmsByGenre } from '../../store/actions';
+import { NUMBER_OF_FILMS } from '../../const';
 
 type ListOfGenresProps = {
   currentGenre: Genre;
-  setNumberOfFilms: Dispatch<SetStateAction<number>>;
+  onSetNumberOfFilms: Dispatch<SetStateAction<number>>;
 }
 
-function ListOfGenres({currentGenre, setNumberOfFilms}: ListOfGenresProps): JSX.Element {
+function ListOfGenres({currentGenre, onSetNumberOfFilms}: ListOfGenresProps): JSX.Element {
   const dispatch = useAppDispatch();
   const namesOfGenres = Object.keys(GenresObj);
   const genres = Object.values(GenresObj);
@@ -26,7 +27,7 @@ function ListOfGenres({currentGenre, setNumberOfFilms}: ListOfGenresProps): JSX.
               onClick={() => {
                 dispatch(changeGenre(genres[index]));
                 dispatch(sortFilmsByGenre());
-                setNumberOfFilms(8);
+                onSetNumberOfFilms(NUMBER_OF_FILMS);
               }}
             >
               {name}

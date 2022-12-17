@@ -1,16 +1,17 @@
 import { SetStateAction, Dispatch } from 'react';
+import { NUMBER_OF_FILMS } from '../../const';
 
 type ShowMoreButtonProps = {
-  setNumberOfFilms: Dispatch<SetStateAction<number>>;
+  onSetNumberOfFilms: Dispatch<SetStateAction<number>>;
 }
 
-function ShowMoreButton({setNumberOfFilms}: ShowMoreButtonProps): JSX.Element {
+function ShowMoreButton({onSetNumberOfFilms}: ShowMoreButtonProps): JSX.Element {
   return (
     <div className="catalog__more">
       <button
         className="catalog__button"
         type="button"
-        onClick={() => setNumberOfFilms((prevState) => prevState + 8)}
+        onClick={() => onSetNumberOfFilms((prevState) => prevState + NUMBER_OF_FILMS)}
       >
         Show more
       </button>

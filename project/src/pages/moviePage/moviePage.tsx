@@ -1,7 +1,7 @@
 import { Link, useParams } from 'react-router-dom';
 import { useState } from 'react';
 import Logo from '../../components/logo/logo';
-import { Film } from '../../types/film';
+import { useAppSelector } from '../../hooks';
 import NotFound from '../notFound/notFound';
 import Tabs from '../../components/tabs/tabs';
 import { Tab } from '../../const';
@@ -9,16 +9,14 @@ import { comments } from '../../mocks/comments';
 import { MovieOverview, MovieDetails, MovieReviews } from '../../components/movieTabs';
 import { similarFilms } from '../../mocks/similarFilms';
 import ListOfFilms from '../../components/listOfFilms/listOfFilms';
+import LoginBlock from '../../components/loginBlock/loginBlock';
 
-type MoviePageProps = {
-  films: Film[];
-};
-
-function MoviePage({films}: MoviePageProps): JSX.Element {
+function MoviePage(): JSX.Element {
+  const {listOfFilms} = useAppSelector((state) => state);
   const [activeTab, setActiveTab] = useState(Tab.Overview);
 
   const {filmId} = useParams();
-  const film = films.find((e) => e.id === Number(filmId));
+  const film = listOfFilms.find((e) => e.id === Number(filmId));
 
   if (film === undefined) {
     return <NotFound />;
@@ -41,16 +39,7 @@ function MoviePage({films}: MoviePageProps): JSX.Element {
           <header className="page-header film-card__head">
             <Logo isLinkLight={false} />
 
-            <ul className="user-block">
-              <li className="user-block__item">
-                <div className="user-block__avatar">
-                  <img src="img/avatar.jpg" alt="User avatar" width="63" height="63" />
-                </div>
-              </li>
-              <li className="user-block__item">
-                <a href='/' className="user-block__link">Sign out</a>
-              </li>
-            </ul>
+            <LoginBlock />
           </header>
 
           <div className="film-card__wrap">
