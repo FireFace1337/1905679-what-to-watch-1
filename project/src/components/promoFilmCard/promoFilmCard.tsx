@@ -1,7 +1,7 @@
-import { Promo } from '../../types/promo';
+import { Film } from '../../types/film';
 
 type PromoFilmCardProps = {
-  film: Promo
+  film: Film
 }
 
 function PromoFilmCard({film} : PromoFilmCardProps) : JSX.Element {

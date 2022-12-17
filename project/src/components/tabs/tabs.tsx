@@ -5,7 +5,7 @@ type TabsProps = {
   activeTab: Tab;
 }
 
-function Tabs({onTab, activeTab}: TabsProps) {
+function Tabs({onTab, activeTab}: TabsProps): JSX.Element {
   return (
     <nav className="film-nav film-card__nav">
       <ul className="film-nav__list">

@@ -2,21 +2,25 @@ import { useState } from 'react';
 import { useAppSelector } from '../../hooks';
 import PromoFilmCard from '../../components/promoFilmCard/promoFilmCard';
 import ListOfFilms from '../../components/listOfFilms/listOfFilms';
-import { Film } from '../../types/films';
-import { Promo } from '../../types/promo';
+import { Film } from '../../types/film';
 import Logo from '../../components/logo/logo';
 import ListOfGenres from '../../components/ListOfGenres/ListOfGenres';
 import ShowMoreButton from '../../components/showMoreButton/showMoreButton';
 
 type MainContentProps = {
   films: Film[];
-  promoFilm: Promo;
+  promoFilm: Film | null;
 }
 
-function MainContent({films, promoFilm}: MainContentProps): JSX.Element {
+function MainContent({films, promoFilm}: MainContentProps): JSX.Element | null {
   const [numberOfFilms, setNumberOfFilms] = useState(8);
-  const {backgroundImage, name} = promoFilm;
   const currentGenre = useAppSelector((state) => state.genre);
+
+  if (!promoFilm) {
+    return null;
+  }
+
+  const {backgroundImage, name} = promoFilm;
   return (
     <>
       <section className="film-card">

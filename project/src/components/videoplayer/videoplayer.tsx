@@ -5,7 +5,7 @@ type VideoPlayerProps = {
   poster: string;
 }
 
-function VideoPlayer({src, poster}: VideoPlayerProps) {
+function VideoPlayer({src, poster}: VideoPlayerProps): JSX.Element {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {

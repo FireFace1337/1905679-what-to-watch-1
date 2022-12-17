@@ -1,5 +1,5 @@
 import Logo from '../../components/logo/logo';
-import { Film } from '../../types/films';
+import { Film } from '../../types/film';
 import ListOfFilms from '../../components/listOfFilms/listOfFilms';
 
 type MyListProps = {
