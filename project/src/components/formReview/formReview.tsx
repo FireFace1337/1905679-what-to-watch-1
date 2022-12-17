@@ -1,10 +1,20 @@
-import { useState, ChangeEvent, Fragment } from 'react';
+import { useState, ChangeEvent, Fragment, FormEvent } from 'react';
+import { useParams } from 'react-router-dom';
+import { useAppDispatch } from '../../hooks';
+import { redirect, setLoadingStatus } from '../../store/actions';
+import { postComment } from '../../store/api-actions';
+import { AppRoute } from '../../const';
 
 function FormReview() {
+  const dispatch = useAppDispatch();
+  const filmId = String(useParams().filmId);
+
   const [formData, setFormData] = useState({
     rating: 0,
     comment: ''
   });
+
+  const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true);
 
   const rateValues = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
 
@@ -14,11 +24,24 @@ function FormReview() {
 
   const onChangeReview = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setFormData({...formData, comment: e.target.value});
+    if (formData.comment.length >= 50 && formData.comment.length <= 400) {
+      setIsButtonDisabled(false);
+    } else {
+      setIsButtonDisabled(true);
+    }
+  };
+
+  const submitHandler = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    dispatch(setLoadingStatus(true));
+    dispatch(postComment({filmId, comment: formData.comment, rating: formData.rating}));
+    dispatch(setLoadingStatus(false));
+    dispatch(redirect(`${AppRoute.Films}/${filmId}`));
   };
 
   return (
     <div className="add-review">
-      <form action="#" className="add-review__form">
+      <form action="#" className="add-review__form" onSubmit={submitHandler}>
         <div className="rating">
           <div className="rating__stars">
             {
@@ -48,9 +71,16 @@ function FormReview() {
             placeholder="Review text"
             value={formData.comment}
             onChange={onChangeReview}
+            required
           />
           <div className="add-review__submit">
-            <button className="add-review__btn" type="submit">Post</button>
+            <button
+              className="add-review__btn"
+              type="submit"
+              disabled={isButtonDisabled}
+            >
+              Post
+            </button>
           </div>
 
         </div>

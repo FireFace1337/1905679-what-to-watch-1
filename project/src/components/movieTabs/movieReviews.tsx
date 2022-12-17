@@ -5,9 +5,7 @@ type MovieReviewsProps = {
 };
 
 function MovieReviews({reviews}: MovieReviewsProps) {
-  const options: object = {
-    hour: 'numeric',
-    minute: 'numeric',
+  const dateOptions: object = {
     year: 'numeric',
     month: 'long',
     day: 'numeric'
@@ -26,7 +24,7 @@ function MovieReviews({reviews}: MovieReviewsProps) {
 
                   <footer className="review__details">
                     <cite className="review__author">{review.user.name}</cite>
-                    <time className="review__date" dateTime="2016-12-24">{date.toLocaleString('en-us', options)}</time>
+                    <time className="review__date" dateTime="2016-12-24">{date.toLocaleString('en-us', dateOptions)}</time>
                   </footer>
                 </blockquote>
 
