@@ -4,7 +4,7 @@ type ShowMoreButtonProps = {
   setNumberOfFilms: Dispatch<SetStateAction<number>>;
 }
 
-function ShowMoreButton({setNumberOfFilms}: ShowMoreButtonProps) {
+function ShowMoreButton({setNumberOfFilms}: ShowMoreButtonProps): JSX.Element {
   return (
     <div className="catalog__more">
       <button

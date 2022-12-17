@@ -20,7 +20,6 @@ export enum Tab {
 
 export enum Genre {
   AllGenres = 'AllGenres',
-  Adventure = 'Adventure',
   Comedy = 'Comedy',
   Crime = 'Crime',
   Documentary = 'Documentary',
@@ -34,7 +33,6 @@ export enum Genre {
 
 export const GenresObj = {
   'All genres': Genre.AllGenres,
-  'Adventures': Genre.Adventure,
   'Comedies': Genre.Comedy,
   'Crime': Genre.Crime,
   'Documentary': Genre.Documentary,
@@ -45,3 +43,12 @@ export const GenresObj = {
   'Sci-Fi': Genre.SciFi,
   'Thrillers': Genre.Thriller
 };
+
+export enum APIRoute {
+  Films = '/films',
+  Promo = '/promo',
+  Favorite = '/favorite',
+  Comments = '/comments',
+  Login = '/login',
+  Logout = '/logout'
+}

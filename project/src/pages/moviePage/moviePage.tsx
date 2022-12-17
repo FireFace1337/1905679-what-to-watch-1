@@ -1,8 +1,8 @@
 import { Link, useParams } from 'react-router-dom';
 import { useState } from 'react';
 import Logo from '../../components/logo/logo';
-import { Film } from '../../types/films';
-import NotFound from '../../components/notFound/notFound';
+import { Film } from '../../types/film';
+import NotFound from '../notFound/notFound';
 import Tabs from '../../components/tabs/tabs';
 import { Tab } from '../../const';
 import { comments } from '../../mocks/comments';
