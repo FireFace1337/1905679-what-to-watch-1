@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import Logo from '../../components/logo/logo';
 import { useAppSelector, useAppDispatch } from '../../hooks';
+import { getAuthorizationStatus } from '../../store/user-process/selectors';
+import { getCurrentFilm } from '../../store/current-film-data/selectors';
 import { redirect } from '../../store/actions';
 import { AuthorizationStatus, AppRoute } from '../../const';
 import NotFound from '../notFound/notFound';
@@ -10,13 +12,15 @@ import LoginBlock from '../../components/loginBlock/loginBlock';
 
 function AddReview(): JSX.Element {
   const dispatch = useAppDispatch();
-  const {currentFilm, authorizationStatus} = useAppSelector((state) => state);
+
+  const currentFilm = useAppSelector(getCurrentFilm);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   useEffect(() => {
     if (authorizationStatus === AuthorizationStatus.NoAuth) {
       dispatch(redirect(AppRoute.Main));
     }
-  }, []);
+  }, [authorizationStatus, dispatch]);
 
   if (!currentFilm) {
     return <NotFound />;
@@ -42,7 +46,7 @@ function AddReview(): JSX.Element {
                 <Link to={`/films/${id}`} className="breadcrumbs__link">{name}</Link>
               </li>
               <li className="breadcrumbs__item">
-                <a className="breadcrumbs__link">Add review</a>
+                <Link className="breadcrumbs__link" to='#'>Add review</Link>
               </li>
             </ul>
           </nav>

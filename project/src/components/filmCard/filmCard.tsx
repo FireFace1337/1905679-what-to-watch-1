@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 import VideoPlayer from '../videoPlayer/videoPlayer';
 
 type FilmCardProps = {
@@ -6,20 +7,18 @@ type FilmCardProps = {
   previewImage: string;
   id: number;
   previewVideoLink: string;
-  onMouseOver: (id: number) => void;
-  onMouseOut: () => void;
-  isActive: boolean;
 }
 
 function FilmCard(props: FilmCardProps): JSX.Element {
-  const {name, previewImage, id, previewVideoLink, onMouseOver, onMouseOut, isActive} = props;
+  const [isActive, setIsActive] = useState(false);
+  const {name, previewImage, id, previewVideoLink} = props;
 
   return (
     <article className="small-film-card catalog__films-card">
       <div
         className="small-film-card__image"
-        onMouseOver={() => onMouseOver(id)}
-        onMouseOut={() => onMouseOut()}
+        onMouseOver={() => setIsActive(true)}
+        onMouseOut={() => setIsActive(false)}
       >
         { isActive
           ? <VideoPlayer src={previewVideoLink} poster={previewImage} />

@@ -1,7 +1,7 @@
 import { useState, ChangeEvent, Fragment, FormEvent } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks';
-import { redirect, setLoadingStatus } from '../../store/actions';
+import { redirect } from '../../store/actions';
 import { postComment } from '../../store/api-actions';
 import { AppRoute } from '../../const';
 
@@ -33,9 +33,7 @@ function FormReview() {
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(setLoadingStatus(true));
     dispatch(postComment({filmId, comment: formData.comment, rating: formData.rating}));
-    dispatch(setLoadingStatus(false));
     dispatch(redirect(`${AppRoute.Films}/${filmId}`));
   };
 

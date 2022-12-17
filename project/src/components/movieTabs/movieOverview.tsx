@@ -1,19 +1,22 @@
+import { getRatingLevel } from '../../utils/film-rating-level';
+
 type MovieOverviewProps = {
   rating: number;
   description: string;
   director: string;
   starring: string[];
+  scoresCount: number;
 }
 
 function MovieOverview(props: MovieOverviewProps) {
-  const {rating, description, director, starring} = props;
+  const {rating, description, director, starring, scoresCount} = props;
   return (
     <>
       <div className="film-rating">
         <div className="film-rating__score">{rating}</div>
         <p className="film-rating__meta">
-          <span className="film-rating__level">Very good</span>
-          <span className="film-rating__count">240 ratings</span>
+          <span className="film-rating__level">{getRatingLevel(rating)}</span>
+          <span className="film-rating__count">{scoresCount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')} ratings</span>
         </p>
       </div>
 

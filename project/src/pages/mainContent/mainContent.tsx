@@ -1,16 +1,34 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useAppDispatch } from '../../hooks';
 import { useAppSelector } from '../../hooks';
+import { getPromoFilm, getLoadingStatus } from '../../store/main-data/selectors';
+import { fetchFilms } from '../../store/api-actions';
 import PromoFilmCard from '../../components/promoFilmCard/promoFilmCard';
 import ListOfFilms from '../../components/listOfFilms/listOfFilms';
 import Logo from '../../components/logo/logo';
-import ListOfGenres from '../../components/listOfGenres/ListOfGenres';
+import ListOfGenres from '../../components/ListOfGenres/ListOfGenres';
 import ShowMoreButton from '../../components/showMoreButton/showMoreButton';
 import LoginBlock from '../../components/loginBlock/loginBlock';
 import { NUMBER_OF_FILMS } from '../../const';
+import LoadingScreen from '../loadingScreen/loadingScreen';
+import { filterFilmsByGenre } from '../../store/main-data/selectors';
 
 function MainContent(): JSX.Element | null {
+  const dispatch = useAppDispatch();
   const [numberOfFilms, setNumberOfFilms] = useState(NUMBER_OF_FILMS);
-  const {genre, listOfFilms, promoFilm} = useAppSelector((state) => state);
+
+  const promoFilm = useAppSelector(getPromoFilm);
+  const isLoading = useAppSelector(getLoadingStatus);
+
+  const filteredFilms = useAppSelector(filterFilmsByGenre);
+
+  useEffect(() => {
+    dispatch(fetchFilms());
+  }, [dispatch]);
+
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
 
   if (!promoFilm) {
     return null;
@@ -41,14 +59,14 @@ function MainContent(): JSX.Element | null {
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-          <ListOfGenres currentGenre={genre} onSetNumberOfFilms={setNumberOfFilms} />
+          <ListOfGenres onSetNumberOfFilms={setNumberOfFilms} />
 
           <div className="catalog__films-list">
-            <ListOfFilms films={listOfFilms.slice(0, numberOfFilms)} />
+            <ListOfFilms films={filteredFilms.slice(0, numberOfFilms)} />
           </div>
 
           {
-            listOfFilms.length > numberOfFilms && <ShowMoreButton onSetNumberOfFilms={setNumberOfFilms} />
+            filteredFilms.length > numberOfFilms && <ShowMoreButton onSetNumberOfFilms={setNumberOfFilms} />
           }
         </section>
 
