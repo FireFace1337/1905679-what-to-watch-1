@@ -1,16 +1,15 @@
 import { Link, useParams } from 'react-router-dom';
 import Logo from '../../components/logo/logo';
-import { Film } from '../../types/film';
+import { useAppSelector } from '../../hooks';
 import NotFound from '../notFound/notFound';
 import FormReview from '../../components/formReview/formReview';
+import LoginBlock from '../../components/loginBlock/loginBlock';
 
-type AddReviewProps = {
-  films: Film[]
-};
+function AddReview(): JSX.Element {
+  const {listOfFilms} = useAppSelector((state) => state);
 
-function AddReview({films}: AddReviewProps): JSX.Element {
   const {filmId} = useParams();
-  const film = films.find((e) => e.id === Number(filmId));
+  const film = listOfFilms.find((e) => e.id === Number(filmId));
 
   if (film === undefined) {
     return <NotFound />;
@@ -41,16 +40,7 @@ function AddReview({films}: AddReviewProps): JSX.Element {
             </ul>
           </nav>
 
-          <ul className="user-block">
-            <li className="user-block__item">
-              <div className="user-block__avatar">
-                <img src="img/avatar.jpg" alt="User avatar" width="63" height="63" />
-              </div>
-            </li>
-            <li className="user-block__item">
-              <a className="user-block__link">Sign out</a>
-            </li>
-          </ul>
+          <LoginBlock />
         </header>
 
         <div className="film-card__poster film-card__poster--small">

@@ -1,4 +1,6 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
+import HistoryRouter from '../historyRouter/historyRouter';
+import { browserHistory } from '../../browserHistory';
 import { useAppSelector } from '../../hooks';
 import MainContent from '../../pages/mainContent/mainContent';
 import NotFound from '../../pages/notFound/notFound';
@@ -8,39 +10,36 @@ import MoviePage from '../../pages/moviePage/moviePage';
 import AddReview from '../../pages/addReview/addReview';
 import Player from '../../pages/player/player';
 import PrivateRoute from '../privateRoute/privateRoute';
-import { AppRoute, AuthorizationStatus } from '../../const';
+import { AppRoute } from '../../const';
 import ScrollToTop from '../scrollToTop/scrollToTop';
 import LoadingScreen from '../../pages/loadingScreen/loadingScreen';
 
 function App(): JSX.Element {
-  const {listOfFilms, promoFilm, favouriteFilms, isLoading} = useAppSelector((state) => state);
+  const {isLoading} = useAppSelector((state) => state);
 
   if (isLoading) {
     return <LoadingScreen />;
   }
 
   return (
-    <BrowserRouter>
+    <HistoryRouter history={browserHistory}>
       <ScrollToTop />
       <Routes>
         <Route path='/'>
           <Route index element={
-            <MainContent
-              films={listOfFilms}
-              promoFilm={promoFilm}
-            />
+            <MainContent />
           }
           />
           <Route path={AppRoute.Login} element={ <SignIn /> } />
           <Route path={AppRoute.MyList} element={
-            <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
-              <MyList favouriteFilms={favouriteFilms} />
+            <PrivateRoute>
+              <MyList />
             </PrivateRoute>
           }
           />
           <Route path={AppRoute.Films}>
-            <Route path=':filmId' element={ <MoviePage films={listOfFilms} /> } />
-            <Route path={`:filmId${AppRoute.Review}`} element={ <AddReview films={listOfFilms} /> } />
+            <Route path=':filmId' element={ <MoviePage /> } />
+            <Route path={`:filmId${AppRoute.Review}`} element={ <AddReview /> } />
           </Route>
           <Route path={AppRoute.Player}>
             <Route path=':filmId' element={ <Player /> } />
@@ -48,7 +47,7 @@ function App(): JSX.Element {
         </Route>
         <Route path='*' element={ <NotFound /> } />
       </Routes>
-    </BrowserRouter>
+    </HistoryRouter>
   );
 }
 

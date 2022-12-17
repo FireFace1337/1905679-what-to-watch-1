@@ -2,19 +2,15 @@ import { useState } from 'react';
 import { useAppSelector } from '../../hooks';
 import PromoFilmCard from '../../components/promoFilmCard/promoFilmCard';
 import ListOfFilms from '../../components/listOfFilms/listOfFilms';
-import { Film } from '../../types/film';
 import Logo from '../../components/logo/logo';
-import ListOfGenres from '../../components/ListOfGenres/ListOfGenres';
+import ListOfGenres from '../../components/listOfGenres/listOfGenres';
 import ShowMoreButton from '../../components/showMoreButton/showMoreButton';
+import LoginBlock from '../../components/loginBlock/loginBlock';
+import { NUMBER_OF_FILMS } from '../../const';
 
-type MainContentProps = {
-  films: Film[];
-  promoFilm: Film | null;
-}
-
-function MainContent({films, promoFilm}: MainContentProps): JSX.Element | null {
-  const [numberOfFilms, setNumberOfFilms] = useState(8);
-  const currentGenre = useAppSelector((state) => state.genre);
+function MainContent(): JSX.Element | null {
+  const [numberOfFilms, setNumberOfFilms] = useState(NUMBER_OF_FILMS);
+  const {genre, listOfFilms, promoFilm} = useAppSelector((state) => state);
 
   if (!promoFilm) {
     return null;
@@ -33,16 +29,7 @@ function MainContent({films, promoFilm}: MainContentProps): JSX.Element | null {
         <header className="page-header film-card__head">
           <Logo isLinkLight={false} />
 
-          <ul className="user-block">
-            <li className="user-block__item">
-              <div className="user-block__avatar">
-                <img src="img/avatar.jpg" alt="User avatar" width="63" height="63" />
-              </div>
-            </li>
-            <li className="user-block__item">
-              <a className="user-block__link">Sign out</a>
-            </li>
-          </ul>
+          <LoginBlock />
         </header>
 
         <PromoFilmCard
@@ -54,14 +41,14 @@ function MainContent({films, promoFilm}: MainContentProps): JSX.Element | null {
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-          <ListOfGenres currentGenre={currentGenre} setNumberOfFilms={setNumberOfFilms} />
+          <ListOfGenres currentGenre={genre} onSetNumberOfFilms={setNumberOfFilms} />
 
           <div className="catalog__films-list">
-            <ListOfFilms films={films.slice(0, numberOfFilms)} />
+            <ListOfFilms films={listOfFilms.slice(0, numberOfFilms)} />
           </div>
 
           {
-            films.length > numberOfFilms && <ShowMoreButton setNumberOfFilms={setNumberOfFilms} />
+            listOfFilms.length > numberOfFilms && <ShowMoreButton onSetNumberOfFilms={setNumberOfFilms} />
           }
         </section>
 
