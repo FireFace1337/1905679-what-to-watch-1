@@ -1,32 +1,34 @@
 import { Link, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Logo from '../../components/logo/logo';
-import { useAppSelector } from '../../hooks';
+import { useAppSelector, useAppDispatch } from '../../hooks';
 import NotFound from '../notFound/notFound';
 import Tabs from '../../components/tabs/tabs';
 import { Tab, AuthorizationStatus, AppRoute } from '../../const';
 import { MovieOverview, MovieDetails, MovieReviews } from '../../components/movieTabs';
 import ListOfFilms from '../../components/listOfFilms/listOfFilms';
 import LoginBlock from '../../components/loginBlock/loginBlock';
-import { useAppDispatch } from '../../hooks';
-import { fetchFilmById, fetchSimilarFilmsById, fetchCommentsById } from '../../store/api-actions';
+import { fetchFilmById, changeFavoriteFilmStatus } from '../../store/api-actions';
+import { getSimilarFilms, getComments, getCurrentFilm, getLoadingStatus } from '../../store/current-film-data/selectors';
+import { getAuthorizationStatus, getFavouriteFilms } from '../../store/user-process/selectors';
 import LoadingScreen from '../loadingScreen/loadingScreen';
 
 function MoviePage(): JSX.Element {
   const dispatch = useAppDispatch();
 
-  const {currentFilm, comments, similarFilms, authorizationStatus} = useAppSelector((state) => state);
-  const [activeTab, setActiveTab] = useState(Tab.Overview);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const filmId = String(useParams().filmId);
 
-  const filmId = String(useParams<string>().filmId);
+  const currentFilm = useAppSelector(getCurrentFilm);
+  const favoriteFilms = useAppSelector(getFavouriteFilms);
+  const comments = useAppSelector(getComments);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const similarFilms = useAppSelector(getSimilarFilms);
+  const isLoading = useAppSelector(getLoadingStatus);
+
+  const [activeTab, setActiveTab] = useState<Tab>(Tab.Overview);
 
   useEffect(() => {
-    setIsLoading(true);
     dispatch(fetchFilmById(filmId));
-    dispatch(fetchCommentsById(filmId));
-    dispatch(fetchSimilarFilmsById(filmId));
-    setIsLoading(false);
   }, [dispatch, filmId]);
 
   if (isLoading) {
@@ -41,7 +43,16 @@ function MoviePage(): JSX.Element {
     setActiveTab(tab);
   };
 
-  const {name, backgroundColor, backgroundImage, genre, released, posterImage, starring, director, description, rating, runTime} = currentFilm;
+  const onMyListButton = () => {
+    let status: number;
+
+    if (currentFilm.isFavorite) { status = 0; }
+    else { status = 1; }
+
+    dispatch(changeFavoriteFilmStatus({filmId, status}));
+  };
+
+  const {name, backgroundColor, backgroundImage, genre, released, posterImage, starring, director, description, rating, runTime, scoresCount} = currentFilm;
 
   return (
     <>
@@ -74,16 +85,23 @@ function MoviePage(): JSX.Element {
                   </svg>
                   <span>Play</span>
                 </button>
-                <button className="btn btn--list film-card__button" type="button">
-                  <svg viewBox="0 0 19 20" width="19" height="20">
-                    <use xlinkHref="#add"></use>
-                  </svg>
-                  <span>My list</span>
-                  <span className="film-card__count">9</span>
-                </button>
                 {
                   authorizationStatus === AuthorizationStatus.Auth
-                    ? <Link to={`${AppRoute.Films}/${filmId}${AppRoute.Review}`} className="btn film-card__button">Add review</Link>
+                    ?
+                    <>
+                      <button className="btn btn--list film-card__button" type="button" onClick={() => onMyListButton()}>
+                        <svg viewBox="0 0 19 20" width="19" height="20">
+                          {
+                            currentFilm.isFavorite
+                              ? <use xlinkHref="#in-list"></use>
+                              : <use xlinkHref="#add"></use>
+                          }
+                        </svg>
+                        <span>My list</span>
+                        <span className="film-card__count">{favoriteFilms.length}</span>
+                      </button>
+                      <Link to={`${AppRoute.Films}/${filmId}${AppRoute.Review}`} className="btn film-card__button">Add review</Link>
+                    </>
                     : null
                 }
               </div>
@@ -106,6 +124,7 @@ function MoviePage(): JSX.Element {
                   description={description}
                   director={director}
                   starring={starring}
+                  scoresCount={scoresCount}
                 />}
 
               {activeTab === Tab.Details &&

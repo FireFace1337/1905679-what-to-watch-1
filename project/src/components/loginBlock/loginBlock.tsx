@@ -1,10 +1,13 @@
 import { Link } from 'react-router-dom';
 import { AuthorizationStatus, AppRoute } from '../../const';
 import { useAppSelector, useAppDispatch } from '../../hooks';
+import { getAuthorizationStatus, getUser } from '../../store/user-process/selectors';
 import { logoutAction } from '../../store/api-actions';
 
 function LoginBlock(): JSX.Element {
-  const {authorizationStatus, user} = useAppSelector((state) => state);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const user = useAppSelector(getUser);
+
   const dispatch = useAppDispatch();
 
   return (

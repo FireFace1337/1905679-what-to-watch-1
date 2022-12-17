@@ -1,17 +1,33 @@
+import { useEffect } from 'react';
 import Logo from '../../components/logo/logo';
-import { useAppSelector } from '../../hooks';
+import { useAppSelector, useAppDispatch } from '../../hooks';
 import ListOfFilms from '../../components/listOfFilms/listOfFilms';
 import LoginBlock from '../../components/loginBlock/loginBlock';
+import { getLoadingStatus, getFavouriteFilms } from '../../store/user-process/selectors';
+import { getMyList } from '../../store/api-actions';
+import LoadingScreen from '../loadingScreen/loadingScreen';
 
 function MyList(): JSX.Element {
-  const {favouriteFilms} = useAppSelector((state) => state);
+  const dispatch = useAppDispatch();
+
+  const isLoading = useAppSelector(getLoadingStatus);
+  const favouriteFilms = useAppSelector(getFavouriteFilms);
+  const filmCount = favouriteFilms.length;
+
+  useEffect(() => {
+    dispatch(getMyList());
+  }, [dispatch]);
+
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <div className="user-page">
       <header className="page-header user-page__head">
         <Logo isLinkLight={false} />
 
-        <h1 className="page-title user-page__title">My list <span className="user-page__film-count">9</span></h1>
+        <h1 className="page-title user-page__title">My list <span className="user-page__film-count">{filmCount}</span></h1>
         <LoginBlock />
       </header>
 
