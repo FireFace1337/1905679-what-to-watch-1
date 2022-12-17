@@ -18,6 +18,7 @@ function VideoPlayer({src, poster}: VideoPlayerProps): JSX.Element {
 
   return (
     <video
+      data-testid="videoplayer"
       width={280}
       height={175}
       poster={poster}

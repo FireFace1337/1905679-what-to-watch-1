@@ -33,7 +33,7 @@ function PromoFilmCard({film} : PromoFilmCardProps) : JSX.Element {
   };
 
   return (
-    <div className="film-card__wrap">
+    <div className="film-card__wrap" data-testid="promo_film">
       <div className="film-card__info">
         <div className="film-card__poster">
           <img src={posterImage} alt={`${name} poster`} width="218" height="327" />

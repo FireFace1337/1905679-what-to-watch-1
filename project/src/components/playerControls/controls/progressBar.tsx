@@ -44,9 +44,8 @@ const ProgressBar = ({videoRef}: ProgressBarProps): JSX.Element => {
   const maxProgressValue = Math.floor(videoRef.current ? videoRef.current.duration : 0);
 
   return (
-    <div className="player__controls-row">
+    <div className="player__controls-row" data-testid="progressbar">
       <div className="player__time">
-        <progress className="player__progress" value={progressValue} max={maxProgressValue}></progress>
         <input
           className="seek"
           id="seek"
@@ -57,6 +56,7 @@ const ProgressBar = ({videoRef}: ProgressBarProps): JSX.Element => {
           step="1"
           onChange={(ev) => onInputRangeChange(ev)}
         />
+        <progress className="player__progress" value={progressValue} max={maxProgressValue}></progress>
       </div>
       <div className="player__time-value">{timeLeft}</div>
     </div>

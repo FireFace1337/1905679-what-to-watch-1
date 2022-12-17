@@ -1,6 +1,8 @@
 import { ToastOptions } from 'react-toastify';
 
 export const NUMBER_OF_FILMS = 8;
+export const NUMBER_OF_SIMILAR_FILMS = 4;
+export const MAX_NUMBER_OF_GENRES = 9;
 
 export const toastifyOptions: ToastOptions = {
   theme: 'colored',
@@ -45,4 +47,12 @@ export enum NameSpace {
   MainPage = 'MAIN_PAGE',
   User = 'USER',
   CurrentFilm = 'CURRENT_FILM'
+}
+
+export enum RatingLevel {
+  Awesome = 'Awesome',
+  VeryGood = 'Very good',
+  Good = 'Good',
+  Normal = 'Normal',
+  Bad = 'Bad'
 }

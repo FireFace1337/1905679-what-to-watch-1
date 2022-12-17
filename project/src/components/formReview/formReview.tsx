@@ -39,7 +39,7 @@ function FormReview() {
 
   return (
     <div className="add-review">
-      <form action="#" className="add-review__form" onSubmit={submitHandler}>
+      <form action="#" className="add-review__form" onSubmit={submitHandler} aria-label="form">
         <div className="rating">
           <div className="rating__stars">
             {

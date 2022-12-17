@@ -1,20 +1,39 @@
-input[type=range] {
+.seek {
   appearance: none;
-  width: 100%;
   background: transparent;
   position: absolute;
   top: -7px;
   margin: 0;
   width: 100%;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.seek:hover {
+  top: -3px;
 }
 
 @-moz-document url-prefix() {
-  input[type=range] {
+  .seek {
     top: -10px;
+  }
+
+  .seek:hover {
+    top: -7px;
   }
 }
 
-input[type=range]::-webkit-slider-thumb {
+.player__progress {
+  transition: .2s;
+}
+
+.seek:hover + .player__progress {
+  height: 10px;
+}
+
+.seek::-webkit-slider-thumb {
+  transform: scale(1.05);
+  transition: .2s;
   appearance: none;
   border-radius: 50%;
   background: #d9cd8d;
@@ -22,17 +41,22 @@ input[type=range]::-webkit-slider-thumb {
   height: 17px;
 }
 
-input[type=range]::-moz-range-thumb {
-  transform: scale(0);
+.seek:hover::-webkit-slider-thumb {
+  transform: scale(1.3);
+}
+
+.seek::-moz-range-thumb {
+  transform: scale(1.05);
   transition: .2s;
   border-radius: 50%;
   background: #d9cd8d;
   width: 17px;
   height: 17px;
+  border: none;
 }
 
-input[type=range]:hover::-moz-range-thumb {
-  transform: scale(1);
+.seek:hover::-moz-range-thumb {
+  transform: scale(1.3);
 }
 
 .player__controls {
